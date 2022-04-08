@@ -1,0 +1,13 @@
+---
+__common_packages: ["zsh", "git", "tmux", "unzip", "curl", "python3-pip"] 
+
+__upgrade_os: false
+
+__zsh_plugins:
+  - zsh-autosuggestions
+  - zsh-syntax-highlighting
+  - zsh-completions
+
+__zsh_shell_path: /bin/zsh
+
+__zsh_custom_path: "{{ ansible_env['HOME'] }}/.oh-my-zsh/custom"

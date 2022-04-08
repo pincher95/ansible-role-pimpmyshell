@@ -1,6 +1,7 @@
 galaxy_info:
   author: Yuri Tsuprun
   namespace: pincher95
+  role_name: pimpmyshell
   description: Role to pimp my shell, install zsh, oh-my-zsh/oh-my-posh, exa, bat, fzf, fd, tmux, git, etc.
   company: Logz.io
 

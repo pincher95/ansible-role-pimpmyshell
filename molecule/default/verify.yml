@@ -5,6 +5,13 @@
   hosts: all
   gather_facts: false
   tasks:
-  - name: Example assertion
+  # - name: Zsh is installed
+  #   ansible.builtin.assert:
+  #     that:
+  #       - common_installed if succ
+  - name: Oh-My-Zsh installed
     ansible.builtin.assert:
-      that: true
+      that:
+        - omz_installed.rc == 0
+      success_msg: "Oh-My-Zsh installed"
+      fail_msg: "Oh-My-Zsh not installed"
