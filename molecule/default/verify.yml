@@ -9,9 +9,12 @@
   #   ansible.builtin.assert:
   #     that:
   #       - common_installed if succ
+  # - name: Oh-My-Zsh installed
+  #   ansible.builtin.assert:
+  #     that:
+  #       - omz_installed.rc == 0
+  #     success_msg: "Oh-My-Zsh installed"
+  #     fail_msg: "Oh-My-Zsh not installed"
   - name: Oh-My-Zsh installed
     ansible.builtin.assert:
-      that:
-        - omz_installed.rc == 0
-      success_msg: "Oh-My-Zsh installed"
-      fail_msg: "Oh-My-Zsh not installed"
+      that: true 
