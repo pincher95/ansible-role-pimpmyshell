@@ -1,4 +1,5 @@
 # Ansible Role: PimpMyShell
+[![CI](https://github.com/pincher95/ansible-role-pimpmyshell/workflows/Build/badge.svg?branch=master&event=push)](https://github.com/pincher95/ansible-role-pimpmyshell/actions?query=workflow%3ABuild)
 
 Installs zsh, oh-my-zsh/oh-my-posh, fzf, exa, bat, fd, powerline10k on MacOS, Ubuntu/Debian, Redhat/Centos/Alma/Rocky, FreeBSD and configures packages, .zshrc and aliases according to supplied variables.
 
@@ -10,88 +11,55 @@ None.
 
 Available variables are listed below, along with default values (see [`defaults/main.yml`](defaults/main.yml)):
 
-    homebrew_repo: https://github.com/Homebrew/brew
+    enable_zsh_plugins: true
 
-The GitHub repository for Homebrew core.
+Enable zsh plugins from [zsh-users](https://github.com/zsh-users) repo.
 
-    homebrew_prefix: "{{ (ansible_machine == 'arm64') | ternary('/opt/homebrew', '/usr/local') }}"
-    homebrew_install_path: "{{ homebrew_prefix }}/Homebrew"
+    zsh_plugins:
+			- zsh-autosuggestions
+			- zsh-syntax-highlighting
+			- zsh-completions
+			- zsh-history-substring-search
 
-The path where Homebrew will be installed (`homebrew_prefix` is the parent directory). It is recommended you stick to the default, otherwise Homebrew might have some weird issues. If you change this variable, you should also manually create a symlink back to /usr/local so things work as Homebrew expects.
+Example zsh plugins.
 
-    homebrew_brew_bin_path: /usr/local/bin
+    enable_bat: true
 
-The path where `brew` will be installed.
+Enable `bat`, a `cat` clone with syntax highlighting and Git integration, install latest version from [bat](https://github.com/sharkdp/bat).
 
-    homebrew_installed_packages:
-      - ssh-copy-id
-      - pv
-      - { name: vim, install_options: "with-luajit,override-system-vi" }
+    enable_exa: true
 
-Packages you would like to make sure are installed via `brew install`. You can optionally add flags to the install by setting an `install_options` property, and if used, you need to explicitly set the `name` for the package as well. By default, no packages are installed (`homebrew_installed_packages: []`).
+Enable `exa`, a modern replacement for `ls`, install latest version from [exa](https://github.com/ogham/exa).
 
-    homebrew_uninstalled_packages: []
+    enable_fd: true
 
-Packages you would like to make sure are _uninstalled_.
+Enable `fd` is a program to find entries in your filesystem. It is a simple, fast and user-friendly alternative to find. While it does not aim to support all of find's powerful functionality, it provides sensible (opinionated) defaults for a majority of use cases, install latest version from [fd](https://github.com/sharkdp/fd).
 
-    homebrew_upgrade_all_packages: false
+    enable_fzf: true
 
-Whether to upgrade homebrew and all packages installed by homebrew. If you prefer to manually update packages via `brew` commands, leave this set to `false`.
+Enable `fzf`, fzf is a general-purpose command-line fuzzy finder, install latest version from [fzf](https://github.com/junegunn/fzf).
 
-    homebrew_taps:
-      - homebrew/core
-      - { name: my_company/internal_tap, url: 'https://example.com/path/to/tap.git' }
+    fzf_env_config: |
+      # Setting for fzf
+      export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'
+      export FZF_DEFAULT_OPTS='--height 100% --multi --layout=reverse-list --inline-info'
+      # To apply the command to CTRL-T as well
+      export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+      export FZF_CTRL_T_OPTS="--preview '{{ "bat --color=always --line-range :500 {}" if enable_bat else "less {}" }}'"
 
-Taps you would like to make sure Homebrew has tapped.
+Customize fzf key bunding and options.
 
-    homebrew_cask_apps:
-      - firefox
-      - { name: virtualbox, install_options:"debug,appdir=/Applications" }
+    enable_zsh_powerline10k: true
 
-Apps you would like to have installed via `cask`. [Search][caskroom] for popular apps to see if they're available for install via Cask. Cask will not be used if it is not included in the list of taps in the `homebrew_taps` variable. You can optionally add flags to the install by setting an `install_options` property, and if used, you need to explicitly set the `name` for the package as well. By default, no Cask apps will be installed (`homebrew_cask_apps: []`).
+Enable `enable_zsh_powerline10k`, Powerlevel10k is a theme for Zsh. It emphasizes speed, flexibility and out-of-the-box experience., install latest version from [Powerlevel10k](https://github.com/romkatv/powerlevel10k).
 
-    homebrew_cask_accept_external_apps: true
+    prompt_renderer: "oh-my-zsh"
 
-Default value is `false` and would result in interruption of further processing of the whole role (and ansible play) in case any app given in `homebrew_cask_apps` is already installed without `cask`. Good for a tightly managed system.
+Choose prompt rendener available `oh-my-zsh` or `oh-my-posh`.
 
-Specify as `true` instead if you prefer to silently continue if any App is already installed without `cask`. Generally good for a system that is managed with `cask` / `Ansible` as well as other install methods (like manually) at the same time.
+    upgrade_os: false
 
-    homebrew_cask_uninstalled_apps:
-      - google-chrome
-
-Apps you would like to make sure are _uninstalled_.
-
-    homebrew_cask_appdir: /Applications
-
-Directory where applications installed via `cask` should be installed.
-
-    ansible_become_password: ""
-
-Set this to your account password if casks you want installed need elevated privileges while installing (like `microsoft-office`), preferably [encrypted via `ansible-vault`][link-vault-doc].
-
-    homebrew_use_brewfile: true
-
-Whether to install via a Brewfile. If so, you will need to install the `homebrew/bundle` tap, which could be done within `homebrew_taps`.
-
-    homebrew_brewfile_dir: '~'
-
-The directory where your Brewfile is located.
-
-    homebrew_clear_cache: false
-
-Set to `true` to remove the Hombrew cache after any new software is installed.
-
-    homebrew_user: "{{ ansible_user_id }}"
-
-The user that you would like to install Homebrew as.
-
-    homebrew_group: "{{ ansible_user_gid }}"
-
-The group that you would like to use while installing Homebrew.
-
-    homebrew_folders_additional: []
-
-Any additional folders inside `homebrew_prefix` for which to ensure homebrew user/group ownership.
+Upgrade OS before installation.
 
 ## Dependencies
 
