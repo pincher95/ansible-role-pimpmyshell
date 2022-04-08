@@ -1,0 +1,6 @@
+---
+- hosts: all
+  tasks:
+    - name: "Include pincher95.pimpmyshell"
+      ansible.builtin.include_role:
+        name: "pimpmyshell"

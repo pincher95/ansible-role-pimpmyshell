@@ -1,0 +1,87 @@
+---
+- name: Install CLI applications
+  community.general.homebrew:
+    name:
+      - "{{ common_packages }}"
+      - "{{ extra_packages }}"
+      - "{{ zsh_plugins if zsh_plugins }}"
+    state: present
+    upgrade_all: true
+
+- name: Change default shell to zsh
+  block:
+    - name: Check that user exists
+      ansible.builtin.command: "grep -q {{ ansible_env['USER'] }} /etc/passwd"
+      changed_when: false
+      ignore_errors: true
+      register: userexist
+
+    - name: Block user if user exists
+      ansible.builtin.user:
+        name: "{{ ansible_env['USER'] }}"
+        shell: "{{ zsh_shell_path }}"
+      when: userexist is succeeded
+
+    - name: Create exe/bat aliases
+      ansible.builtin.lineinfile:
+        dest: "{{ ansible_env['HOME'] }}/.zshrc"
+        line: "alias {{ item.alias }}='{{ item.command }}'"  # exe/bat alias for zsh shell
+        state: present
+      loop:
+        - {{ alias: "ll", command: "exe -la" }}
+        - {{ alias: "cat", command: "bat" }}
+      when: enable_exa_bat
+
+    # - name: Create bat alias
+    #   ansible.builtin.lineinfile:
+    #     dest: "{{ ansible_env['HOME'] }}/.zshrc"
+    #     line: "alias cat='bat'"  # bat alias for zsh shell
+    #     state: present
+    #   when: enable_bat
+
+    - name: Configure fzf
+      ansible.builtin.blockinfile:
+        path: "{{ ansible_env['HOME'] }}/.zshrc"
+        content: fzf_env_config
+        state: present
+      when: enable_fzf
+
+
+- name: Install Graphical applications
+  community.general.homebrew_cask:
+    name:
+      - "{{ graphical_apps }}"
+    state: present
+
+- name: Install Oh-My-Zsh
+  block:
+    - name: Dowmload Oh-My-Zsh
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+        dest: /tmp/install.sh
+        mode: 0755
+
+    - name: Install Oh-My-Zsh
+      ansible.builtin.script:
+        cmd: /tmp/install.sh
+  when: prompt_renderer == "oh-my-zsh"
+
+- name: Install Oh-My-Posh
+  block:
+    - name: Add Oh-My-Posh Tap
+      community.general.homebrew_tap:
+        name: jandedobbeleer/oh-my-posh
+        state: present
+
+    - name: Install Oh-My-Posh
+      community.general.homebrew:
+        name:
+          - "{{ prompt_renderer }}"
+        state: present
+  when: prompt_renderer == "oh-my-posh"
+
+- name: Install Oh-My-Zsh Plugins
+  community.general.homebrew:
+    name:
+      - "{{ zsh_plugins }}"
+    state: present

@@ -1,0 +1,38 @@
+---
+- name: Converge
+  hosts: all
+  # gather_facts: false
+  # become: true
+
+  # pre_tasks:
+  #   - name: Update apt cache.
+  #     ansible.builtin.apt:
+  #       update_cache: true
+  #       cache_valid_time: 600
+  #     when: ansible_os_family == 'Debian'
+  #     changed_when: false
+  #     ignore_errors: true
+
+  #   # Ubuntu-specific tasks.
+  #   - name: Ensure dirmngr is installed (gnupg dependency).
+  #     ansible.builtin.apt:
+  #       name: dirmngr
+  #       state: present
+  #     when: ansible_os_family == 'Debian'
+  #     ignore_errors: true
+  tasks:
+    - name: "Include pincher95.pimpmyshell"
+      ansible.builtin.include_role:
+        name: "pincher95.pimpmyshell"
+
+  # roles:
+  #   - role: geerlingguy.repo-remi
+  #     when:
+  #       - ansible_os_family == 'RedHat'
+  #       - ansible_distribution != 'Fedora'
+  #   - role: pimpmyshell
+
+  # post_tasks:
+  #   - name: Confirm PHP configuration is correct.
+  #     ansible.builtin.shell: php -i | grep 'memory_limit.*192'
+  #     changed_when: false

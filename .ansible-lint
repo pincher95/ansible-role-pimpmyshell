@@ -1,0 +1,6 @@
+exclude_paths:
+ - ./.travis.yml
+ - ./molecule/
+
+skip_list:
+ - 'yaml'

@@ -1,0 +1,45 @@
+---
+# Variable configuration.
+- name: Include OS-specific variables
+  ansible.builtin.include_vars: '{{ platform_vars }}'
+  with_first_found:
+    - "{{ ansible_distribution }}.yml"
+    - "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
+    - "{{ ansible_os_family }}.yml"
+  loop_control:
+    loop_var: platform_vars
+
+- name: Set upgrade OS
+  ansible.builtin.set_fact:
+    upgrade_os: "{{ __upgrade_os }}"
+  when: upgrade_os is undefined
+  
+- name: Set the common packages.
+  ansible.builtin.set_fact:
+    common_packages: "{{ __common_packages }}"
+  when: common_packages | length == 0
+
+- name: Set the zsh plugins.
+  ansible.builtin.set_fact:
+    zsh_plugins: "{{ __zsh_plugins }}"
+  when: zsh_plugins | length == 0
+
+- name: Set the zsh path.
+  ansible.builtin.set_fact:
+    zsh_shell_path: "{{ __zsh_shell_path }}"
+  when: zsh_shell_path is undefined
+
+- name: Set the zsh custom path.
+  ansible.builtin.set_fact:
+    zsh_custom_path: "{{ __zsh_custom_path }}"
+  when: zsh_custom_path is undefined
+
+# Install pimp my shell
+- name: Configure system
+  ansible.builtin.include_tasks: '{{ platform }}'
+  with_first_found:
+    - 'setup-{{ ansible_os_family }}.yml'
+    - 'setup-{{ ansible_distribution }}.yml'
+    - 'not-supported.yml'
+  loop_control:
+    loop_var: platform

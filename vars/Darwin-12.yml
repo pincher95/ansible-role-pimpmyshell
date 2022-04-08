@@ -1,0 +1,21 @@
+---
+__common_packages:
+  - git
+  - zsh
+
+__extra_packages:
+  - bat
+  - fzf
+  - exa
+  - tmux
+  - fd
+
+graphical_apps:
+  - iterm2
+
+__zsh_plugins:
+  - zsh-autosuggestions
+  - zsh-syntax-highlighting
+  - zsh-completions
+
+__zsh_shell_path: /usr/local/bin/zsh

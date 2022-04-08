@@ -1,0 +1,127 @@
+---
+- name: Update apt cache.
+  ansible.builtin.apt:
+    update_cache: true
+    upgrade: "{{ upgrade_os | default(false) }}"
+    cache_valid_time: 86400
+  become: true
+
+- name: Install Pre-requirements CLI applications
+  ansible.builtin.apt:
+    name: "{{ common_packages }}"
+    state: present
+  become: true
+
+- name: Install extra CLI applications
+  include_tasks: configure-extra-cil.yml
+
+- name: Change default shell to zsh
+  block:
+    - name: Check that user exists
+      ansible.builtin.command:
+        cmd: "grep -q {{ ansible_env['USER'] }} /etc/passwd"
+      changed_when: false
+      ignore_errors: true
+      register: userexist
+      become: true
+
+    - name: Change user shell
+      ansible.builtin.user:
+        name: "{{ ansible_env['USER'] }}"
+        shell: "{{ zsh_shell_path }}"
+      when: userexist.rc == 0
+      become: true
+  when: enable_zsh_shell | default(true)
+  tags:
+    - molecule-notest
+
+- name: Install Oh-My-Zsh
+  block:
+    - name: Check if Oh-My-Zsh is already installed
+      ansible.builtin.stat:
+        path: /{{ ansible_env['HOME'] }}/.oh-my-zsh
+      ignore_errors: true
+      register: zsh_installed
+
+    - name: Download Oh-My-Zsh
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+        dest: /tmp/install.sh
+        mode: 0755
+
+    - name: Install Oh-My-Zsh
+      ansible.builtin.command:
+        cmd: "/tmp/install.sh --unattended"
+      register: omz_installed
+      changed_when: 
+        - omz_installed.rc == 0
+        - "'molecule-idempotence-notest' not in ansible_skip_tags"
+      when: zsh_installed.stat is defined and zsh_installed.stat.exists is false
+
+    # TODO make more generic for other plugins
+    - name: Download Oh-My-Zsh Plugins
+      ansible.builtin.git:
+        name: "https://github.com/zsh-users/{{ item }}"
+        dest: "{{ zsh_custom_path }}/plugins/{{ item }}"
+        clone: true
+        version: master
+      when: enable_zsh_plugins
+      loop: "{{ zsh_plugins }}"
+
+    - name: Enable Oh-My-Zsh Plugins
+      ansible.builtin.lineinfile:
+        dest: "{{ ansible_env['HOME'] }}/.zshrc"
+        regexp: "^plugins=(.*)"
+        line: "plugins=({{ zsh_plugins | join(' ') + ' fzf' if enable_fzf | default(true) else '' }})"
+        state: present
+      when: enable_zsh_plugins | default(true)
+
+    - name: Install Powerline10k
+      ansible.builtin.git:
+        name: "https://github.com/romkatv/powerlevel10k"
+        dest: "{{ zsh_custom_path }}/themes/powerlevel10k"
+        clone: true
+        version: master
+      when: enable_zsh_powerline10k | default(true)
+
+    - name: Enable Powerline10k
+      ansible.builtin.lineinfile:
+        dest: "{{ ansible_env['HOME'] }}/.zshrc"
+        regexp: "^ZSH_THEME=.*"
+        line: "ZSH_THEME=\"powerlevel10k/powerlevel10k\""
+        state: present
+      when: enable_zsh_powerline10k
+  when: prompt_renderer == "oh-my-zsh"
+
+- name: Install Oh-My-Posh
+  block:
+    - name: Add Oh-My-Posh Tap
+      community.general.homebrew_tap:
+        name: jandedobbeleer/oh-my-posh
+        state: present
+
+    - name: Install Oh-My-Posh
+      community.general.homebrew:
+        name:
+          - "{{ prompt_renderer }}"
+        state: present
+  when: prompt_renderer == "oh-my-posh"
+
+- name: Create exa/bat aliases
+  ansible.builtin.lineinfile:
+    dest: "{{ ansible_env['HOME'] }}/.zshrc"
+    line: "alias {{ item.alias }}='{{ item.command }}'"  # exa/bat alias for zsh shell
+    state: present
+  loop:
+    - {alias: "ll", command: "exa -la"}
+    - {alias: "cat", command: "bat"}
+  when:
+    - enable_exa | default(true)
+    - enable_bat | default(true)
+
+- name: Configure fzf
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env['HOME'] }}/.zshrc"
+    content: "{{ fzf_env_config }}"
+    state: present
+  when: enable_fzf | default(true)
