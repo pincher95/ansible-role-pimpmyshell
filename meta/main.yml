@@ -30,24 +30,15 @@ galaxy_info:
   # https://galaxy.ansible.com/api/v1/platforms/
   #
   platforms:
-    - name: ubuntu
+    - name: Ubuntu
       versions:
         - 18.04
         - 20.04
-    - name: debian
+    - name: Debian
       versions:
         - 10
         - 11
-    - name: centos
-      versions:
-        - 8
-    - name: rhel
-      versions:
-        - 8
-    - name: rockylinux
-      versions:
-        - 8
-    - name: almalinux
+    - name: EL
       versions:
         - 8
   # - name: Fedora
