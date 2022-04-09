@@ -1,5 +1,7 @@
 ---
-__common_packages: ["zsh", "git", "tmux", "unzip", "curl", "python3-pip"] 
+__common_packages: ["zsh", "git", "tmux", "unzip", "curl", "python3-pip"]
+
+common_packages_7: ["python3", "python3-setuptools", "python3-virtualenv", "chkconfig"]
 
 __upgrade_os: false
 

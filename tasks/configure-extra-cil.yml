@@ -3,6 +3,7 @@
   ansible.builtin.pip:
     name: github3.py
     state: present
+    executable: /usr/bin/pip3
 
 - name: Install fzf
   block:
