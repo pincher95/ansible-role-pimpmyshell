@@ -19,6 +19,13 @@
         cmd: "{{ ansible_env['HOME'] }}/.fzf/install --key-bindings --completion --no-update-rc"
       register: register_output
       changed_when: register_output.rc != 0
+
+    - name: Configure fzf
+      ansible.builtin.blockinfile:
+        path: "{{ ansible_env['HOME'] }}/.zshrc"
+        content: "{{ fzf_env_config }}"
+        state: present
+      when: enable_fzf | default(true)
   when:
     # - ansible_os_family == "Darwin" or ansible_os_family == "Linux"
     - enable_fzf | default(true)
@@ -62,6 +69,14 @@
         - { src: /tmp/exa/man/exa.1, dest: /usr/share/man/man1/ }
         - { src: /tmp/exa/man/exa_colors.5, dest: /usr/share/man/man5/ }
       become: true
+
+    - name: Create exa alias
+      ansible.builtin.lineinfile:
+        dest: "{{ ansible_env['HOME'] }}/.zshrc"
+        line: "alias {{ item.alias }}='{{ item.command }}'"  # exa alias for zsh shell
+        state: present
+      loop:
+        - { alias: "ll", command: "exa -la" }
   when:
     - enable_exa | default(true)
 
@@ -103,6 +118,14 @@
         - { src: "/tmp/bat/bat-{{ github_release['tag'] }}-{{ ansible_architecture }}-{{ os_variant }}/autocomplete/bat.zsh", dest: /usr/local/share/zsh/site-functions/ }
         - { src: "/tmp/bat/bat-{{ github_release['tag'] }}-{{ ansible_architecture }}-{{ os_variant }}/bat.1", dest: /usr/share/man/man1/ }
       become: true
+
+    - name: Create bat alias
+      ansible.builtin.lineinfile:
+        dest: "{{ ansible_env['HOME'] }}/.zshrc"
+        line: "alias {{ item.alias }}='{{ item.command }}'"  # exa alias for zsh shell
+        state: present
+      loop:
+        - { alias: "cat", command: "bat" }
   when:
     - enable_bat | default(true)
 

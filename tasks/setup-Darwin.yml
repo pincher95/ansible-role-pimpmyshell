@@ -106,22 +106,3 @@
           - "{{ prompt_renderer }}"
         state: present
   when: prompt_renderer == "oh-my-posh"
-
-- name: Create exa/bat aliases
-  ansible.builtin.lineinfile:
-    dest: "{{ ansible_env['HOME'] }}/.zshrc"
-    line: "alias {{ item.alias }}='{{ item.command }}'"  # exa/bat alias for zsh shell
-    state: present
-  loop:
-    - { alias: "ll", command: "exa -la" }
-    - { alias: "cat", command: "bat" }
-  when:
-    - enable_exa | default(true)
-    - enable_bat | default(true)
-
-- name: Configure fzf
-  ansible.builtin.blockinfile:
-    path: "{{ ansible_env['HOME'] }}/.zshrc"
-    content: "{{ fzf_env_config }}"
-    state: present
-  when: enable_fzf | default(true)
