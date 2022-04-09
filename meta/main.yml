@@ -18,7 +18,7 @@ galaxy_info:
   # - CC-BY-4.0
   license: MIT
 
-  min_ansible_version: 2.1
+  min_ansible_version: 2.9
 
   # If this a Container Enabled role, provide the minimum Ansible Container version.
   # min_ansible_container_version:
@@ -34,115 +34,22 @@ galaxy_info:
       versions:
         - 18.04
         - 20.04
-        - all
     - name: debian
       versions:
-        - 7
-        - 8
-        - 9
-        - 10
-        - all
-    - name: centos
-      versions:
-        - 7
-        - 8
-        - 9
-        - 10
-        - all
-    - name: rhel
-      versions:
-        - 7
-        - 8
-        - 9
-        - 10
-        - all
-    - name: fedora
-      versions:
-        - 25
-        - 26
-        - 27
-        - 28
-        - all
-    - name: opensuse
-      versions:
-        - 42.3
-        - 42.2
-        - 42.1
-        - 42.0
-        - all
-    - name: amazon
-      versions:
-        - 2
-        - 3
-        - 4
-        - 5
-        - all
-    - name: oracle
-      versions:
-        - 7
-        - 8
-        - 9
         - 10
         - 11
-        - 12
-        - 13
-        - 14
-        - 15
-        - 16
-        - 17
-        - 18
-        - 19
-        - 20
-        - 21
-        - 22
-        - 23
-        - 24
-        - 25
-        - 26
-        - 27
-        - 28
-        - 29
-        - 30
-        - 31
-        - 32
-        - 33
-        - 34
-        - 35
-        - 36
-        - 37
-        - 38
-        - 39
-        - 40
-        - 41
-        - 42
-        - 43
-        - 44
-        - 45
-        - 46
-        - 47
-        - 48
-        - 49
-        - 50
-        - 51
-        - 52
-        - 53
-        - 54
-        - 55
-        - 56
-        - 57
-        - 58
-        - 59
-        - 60
-        - 61
-        - 62
-        - 63
-        - 64
-        - 65
-        - 66
-        - 67
-        - 68
-        - 69
-        - 70
+    - name: centos
+      versions:
+        - 8
+    - name: rhel
+      versions:
+        - 8
+    - name: rockylinux
+      versions:
+        - 8
+    - name: almalinux
+      versions:
+        - 8
   # - name: Fedora
   #   versions:
   #   - all
