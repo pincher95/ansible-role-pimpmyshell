@@ -7,6 +7,16 @@ Installs zsh, oh-my-zsh/oh-my-posh, fzf, exa, bat, fd, powerline10k on MacOS, Ub
 
 None.
 
+## Operating Systems
+
+The role tested the following operating systems:
+
+- `Ubuntu 18.04, 20.04`
+- `Debian 10, 11`
+- `CentOS 8`
+- `AlmaLinux/RockyLinux`
+- `Red Hat Enterprise Linux 8`
+
 ## Role Variables
 
 Available variables are listed below, along with default values (see [`defaults/main.yml`](defaults/main.yml)):
