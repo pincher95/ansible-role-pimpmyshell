@@ -1,4 +1,8 @@
 # Ansible Role: PimpMyShell
+NOTE:
+  - MacOS and Freebsd support under development.
+  - oh-my-posh under development.
+
 [![CI](https://github.com/pincher95/ansible-role-pimpmyshell/workflows/CI/badge.svg?branch=main&event=push)](https://github.com/pincher95/ansible-role-pimpmyshell/actions?query=workflow%3ABuild)
 
 Installs zsh, oh-my-zsh/oh-my-posh, fzf, exa, bat, fd, powerline10k on MacOS, Ubuntu/Debian, Redhat/Centos/Alma/Rocky, FreeBSD and configures packages, .zshrc and aliases according to supplied variables.
@@ -86,9 +90,8 @@ Upgrade OS before installation.
       roles:
         - pincher95.pimpmyshell
 
-See the `tests/local-testing` directory for an example of running this role over
-Ansible's `local` connection. See also:
-[Mac Development Ansible Playbook][mac-dev-playbook].
+See the `tests/test.yml` directory for an example of running this role over
+Ansible's `local` connection.
 
 ## License
 
