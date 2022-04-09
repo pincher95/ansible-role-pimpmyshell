@@ -32,12 +32,12 @@ galaxy_info:
   platforms:
     - name: Ubuntu
       versions:
-        - 18.04
-        - 20.04
+        - bionic
+        - focal
     - name: Debian
       versions:
-        - 10
-        - 11
+        - buster
+        - bullseye
     - name: EL
       versions:
         - 8
