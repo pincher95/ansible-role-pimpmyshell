@@ -1,5 +1,5 @@
 # Ansible Role: PimpMyShell
-[![CI](https://github.com/pincher95/ansible-role-pimpmyshell/workflows/Build/badge.svg?branch=master&event=push)](https://github.com/pincher95/ansible-role-pimpmyshell/actions?query=workflow%3ABuild)
+[![CI](https://github.com/pincher95/ansible-role-pimpmyshell/workflows/Build/badge.svg?branch=main&event=push)](https://github.com/pincher95/ansible-role-pimpmyshell/actions?query=workflow%3ABuild)
 
 Installs zsh, oh-my-zsh/oh-my-posh, fzf, exa, bat, fd, powerline10k on MacOS, Ubuntu/Debian, Redhat/Centos/Alma/Rocky, FreeBSD and configures packages, .zshrc and aliases according to supplied variables.
 
@@ -16,10 +16,10 @@ Available variables are listed below, along with default values (see [`defaults/
 Enable zsh plugins from [zsh-users](https://github.com/zsh-users) repo.
 
     zsh_plugins:
-			- zsh-autosuggestions
-			- zsh-syntax-highlighting
-			- zsh-completions
-			- zsh-history-substring-search
+      - zsh-autosuggestions
+      - zsh-syntax-highlighting
+      - zsh-completions
+      - zsh-history-substring-search
 
 Example zsh plugins.
 
