@@ -3,7 +3,7 @@ NOTE:
   - MacOS and Freebsd support under development.
   - oh-my-posh under development.
 
-[![CI](https://github.com/pincher95/ansible-role-pimpmyshell/workflows/CI/badge.svg?branch=main&event=push)](https://github.com/pincher95/ansible-role-pimpmyshell/actions?query=workflow%3ABuild)[![Ansible Galaxy](https://img.shields.io/badge/galaxy-pincher95.pimpmyshell-brightgreen)](https://galaxy.ansible.com/pincher95/pimpmyshell/)
+[![CI](https://github.com/pincher95/ansible-role-pimpmyshell/workflows/CI/badge.svg?branch=main&event=push)](https://github.com/pincher95/ansible-role-pimpmyshell/actions?query=workflow%3ABuild) [![Ansible Galaxy](https://img.shields.io/badge/galaxy-pincher95.pimpmyshell-brightgreen)](https://galaxy.ansible.com/pincher95/pimpmyshell/)
 
 Installs zsh, oh-my-zsh/oh-my-posh, fzf, exa, bat, fd, powerline10k on MacOS, Ubuntu/Debian, Redhat/Centos/Alma/Rocky, FreeBSD and configures packages, .zshrc and aliases according to supplied variables.
 
@@ -80,7 +80,9 @@ Upgrade OS before installation.
   - [elliotweiser.osx-command-line-tools](https://github.com/elliotweiser/ansible-osx-command-line-tools)
   - [geerlingguy.homebrew](https://github.com/geerlingguy/ansible-collection-mac/tree/master/roles/homebrew)
 
-## Example Playbook run for user `user`
+## Example Playbook
+
+Example run for user `user`:
 ```sh
 ansible-playbook -i inventory -u user -K test.yml
 ```
@@ -107,11 +109,11 @@ Ansible's `local` connection.
 
 ## License
 
-[MIT][link-license]
+[MIT][link-license](https://spdx.org/licenses/MIT.html)
 
 ## Author Information
 
-This role was created in 2022 by [Yuri Tsuprun]
+This role was created in 2022 by [Yuri Tsuprun](https://github.com/pincher95)
 
 #### Maintainer(s)
 
