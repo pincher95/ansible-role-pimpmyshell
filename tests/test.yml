@@ -1,5 +1,14 @@
 ---
-- hosts: localhost
-  remote_user: root
-  roles:
-    - pimpmyshell
+- hosts: all
+  connection: local
+  become_user: root
+  become: true
+  vars:
+    prompt_renderer: "oh-my-zsh"
+    zsh_plugins:
+      - zsh-autosuggestions
+      - zsh-syntax-highlighting
+  tasks:
+    - name: "Include pincher95.pimpmyshell"
+      ansible.builtin.include_role:
+        name: "pincher95.pimpmyshell"

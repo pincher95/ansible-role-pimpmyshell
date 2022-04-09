@@ -122,7 +122,7 @@
     - name: Create bat alias
       ansible.builtin.lineinfile:
         dest: "{{ ansible_env['HOME'] }}/.zshrc"
-        line: "alias {{ item.alias }}='{{ item.command }}'"  # exa alias for zsh shell
+        line: "alias {{ item.alias }}='{{ item.command }}'"  # bat alias for zsh shell
         state: present
       loop:
         - { alias: "cat", command: "bat" }

@@ -76,19 +76,31 @@ Choose prompt rendener available `oh-my-zsh`(https://ohmyz.sh/) or `oh-my-posh`(
 Upgrade OS before installation.
 
 ## Dependencies
+  For MacOS the following packages are required:
+  - [elliotweiser.osx-command-line-tools][dep-osx-clt-role](https://github.com/elliotweiser/ansible-osx-command-line-tools)
+  - [geerlingguy.homebrew][dep-homebrew-role](https://github.com/geerlingguy/ansible-collection-mac/tree/master/roles/homebrew)
 
-  - [elliotweiser.osx-command-line-tools][dep-osx-clt-role]
+## Example Playbook run for user `user`
+```sh
+ansible-playbook -i inventory -u user -K test.yml
+```
 
-## Example Playbook
-
-    - hosts: localhost
+    ---
+    - hosts: all
+      connection: local
+      become_user: root
+      become: true
       vars:
         prompt_renderer: "oh-my-zsh"
         zsh_plugins:
           - zsh-autosuggestions
-          - zsh-syntax-highlighting        
-      roles:
-        - pincher95.pimpmyshell
+          - zsh-syntax-highlighting
+          - zsh-completions
+          - zsh-history-substring-search
+      tasks:
+        - name: "Include pincher95.pimpmyshell"
+          ansible.builtin.include_role:
+            name: "pincher95.pimpmyshell"
 
 See the `tests/test.yml` directory for an example of running this role over
 Ansible's `local` connection.
