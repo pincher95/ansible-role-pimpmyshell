@@ -43,3 +43,6 @@
     - 'not-supported.yml'
   loop_control:
     loop_var: platform
+
+- name: Install extra CLI applications
+  include_tasks: configure-extra-cil.yml

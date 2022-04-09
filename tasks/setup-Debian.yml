@@ -12,9 +12,6 @@
     state: present
   become: true
 
-- name: Install extra CLI applications
-  include_tasks: configure-extra-cil.yml
-
 - name: Change default shell to zsh
   block:
     - name: Check that user exists

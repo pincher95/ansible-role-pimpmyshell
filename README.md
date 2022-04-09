@@ -41,7 +41,7 @@ Enable `fzf`, fzf is a general-purpose command-line fuzzy finder, install latest
 
     fzf_env_config: |
       # Setting for fzf
-      export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'
+      export FZF_DEFAULT_COMMAND='{{ "fd --type f --hidden --follow" if enable_fd else "find . -type f" }}'
       export FZF_DEFAULT_OPTS='--height 100% --multi --layout=reverse-list --inline-info'
       # To apply the command to CTRL-T as well
       export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -55,7 +55,7 @@ Enable `enable_zsh_powerline10k`, Powerlevel10k is a theme for Zsh. It emphasize
 
     prompt_renderer: "oh-my-zsh"
 
-Choose prompt rendener available `oh-my-zsh` or `oh-my-posh`.
+Choose prompt rendener available `oh-my-zsh`(https://ohmyz.sh/) or `oh-my-posh`(https://ohmyposh.dev/).
 
     upgrade_os: false
 
