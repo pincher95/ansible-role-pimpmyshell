@@ -40,6 +40,7 @@ jobs:
       matrix:
         distro:
           - rockylinux8
+          - almalinux8
           - centos7
           # - fedora35
           - ubuntu2004

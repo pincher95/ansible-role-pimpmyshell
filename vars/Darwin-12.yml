@@ -1,14 +1,5 @@
 ---
-__common_packages:
-  - git
-  - zsh
-
-__extra_packages:
-  - bat
-  - fzf
-  - exa
-  - tmux
-  - fd
+__common_packages: ["zsh", "git", "tmux", "unzip", "curl", "python"]
 
 graphical_apps:
   - iterm2
@@ -17,5 +8,10 @@ __zsh_plugins:
   - zsh-autosuggestions
   - zsh-syntax-highlighting
   - zsh-completions
+  - zsh-history-substring-search
+
+__upgrade_os: false
 
 __zsh_shell_path: /usr/local/bin/zsh
+
+__zsh_custom_path: "{{ ansible_env['HOME'] }}/.oh-my-zsh/custom"

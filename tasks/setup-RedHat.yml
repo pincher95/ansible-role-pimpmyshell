@@ -4,7 +4,19 @@
     update_cache: true
     name: "*"
     state: "{{ 'latest' if upgrade_os | default(false) else 'present' }}"
-  when: upgrade_os | default(false)
+  when:
+    - upgrade_os | default(false)
+    - ansible_destribution_major_version >= '8'
+  become: true
+
+- name: Upgrade OS
+  ansible.builtin.yum:
+    update_cache: true
+    name: "*"
+    state: "{{ 'latest' if upgrade_os | default(false) else 'present' }}"
+  when:
+    - upgrade_os | default(false)
+    - ansible_destribution_major_version == '7'
   become: true
 
 - name: Install Pre-requirements CLI applications
@@ -115,8 +127,8 @@
     line: "alias {{ item.alias }}='{{ item.command }}'"  # exa/bat alias for zsh shell
     state: present
   loop:
-    - {alias: "ll", command: "exa -la"}
-    - {alias: "cat", command: "bat"}
+    - { alias: "ll", command: "exa -la" }
+    - { alias: "cat", command: "bat" }
   when:
     - enable_exa | default(true)
     - enable_bat | default(true)
