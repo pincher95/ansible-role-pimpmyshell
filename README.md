@@ -23,11 +23,21 @@ The role tested the following operating systems:
 
 ## Role Variables
 
+| Variable                  | Default   | Comments (type)                                                                                                                                                                                                              |
+| :---                      | :---      | :---                                                                                                                                                                                                                         |
+| `enable_zsh_plugins`      | true      | Enable zsh plugins from [zsh-users](https://github.com/zsh-users) repo.                                                                                                                                                      |
+| `zsh_plugins`             | []        | List of zsh plugins [zsh-users](https://github.com/zsh-users) repo.                                                                                                                                                          |
+| `enable_bat`              | true      | Enable `bat`, a `cat` clone with syntax highlighting and Git integration, install latest version from [bat](https://github.com/sharkdp/bat).                                                                                 |
+| `enable_exa`              | true      | Enable `exa`, a modern replacement for `ls`, install latest version from [exa](https://github.com/ogham/exa).                                                                                                                |
+| `enable_fd`               | true      | Enable `fd` While it does not aim to support all of find's powerful functionality, it provides sensible (opinionated) defaults for a majority of use cases, install latest version from [fd](https://github.com/sharkdp/fd). |
+| `enable_fzf`              | true      | Enable `fzf`, fzf is a general-purpose command-line fuzzy finder, install latest version from [fzf](https://github.com/junegunn/fzf.                                                                                         |
+| `enable_zsh_powerline10k` | true      | Enable `enable_zsh_powerline10k`, Powerlevel10k is a theme for Zsh. It emphasizes speed, flexibility and out-of-the-box experience., install latest version from [Powerlevel10k](https://github.com/romkatv/powerlevel10k).  |
+| `prompt_renderer`         | oh-my-zsh | Choose prompt rendener available `oh-my-zsh`(https://ohmyz.sh/) or `oh-my-posh`(https://ohmyposh.dev/).                                                                                                                      |
+| `upgrade_os`              | fasle     | Upgrade OS before installation.                                                                                                                                                                                              |
+| `fzf_env_config`          | string    | Block of fzf key binding and configurations.                                                                                                                                                                                 |
+
+
 Available variables are listed below, along with default values (see [`defaults/main.yml`](defaults/main.yml)):
-
-    enable_zsh_plugins: true
-
-Enable zsh plugins from [zsh-users](https://github.com/zsh-users) repo.
 
     zsh_plugins:
       - zsh-autosuggestions
@@ -37,43 +47,15 @@ Enable zsh plugins from [zsh-users](https://github.com/zsh-users) repo.
 
 Example zsh plugins.
 
-    enable_bat: true
-
-Enable `bat`, a `cat` clone with syntax highlighting and Git integration, install latest version from [bat](https://github.com/sharkdp/bat).
-
-    enable_exa: true
-
-Enable `exa`, a modern replacement for `ls`, install latest version from [exa](https://github.com/ogham/exa).
-
-    enable_fd: true
-
-Enable `fd` is a program to find entries in your filesystem. It is a simple, fast and user-friendly alternative to find. While it does not aim to support all of find's powerful functionality, it provides sensible (opinionated) defaults for a majority of use cases, install latest version from [fd](https://github.com/sharkdp/fd).
-
-    enable_fzf: true
-
-Enable `fzf`, fzf is a general-purpose command-line fuzzy finder, install latest version from [fzf](https://github.com/junegunn/fzf).
-
     fzf_env_config: |
       # Setting for fzf
-      export FZF_DEFAULT_COMMAND='{{ "fd --type f --hidden --follow" if enable_fd else "find . -type f" }}'
+      export FZF_DEFAULT_COMMAND='{{ "fd --type f --hidden --follow" if enable_fd | default(true) else "find . -type f" }}'
       export FZF_DEFAULT_OPTS='--height 100% --multi --layout=reverse-list --inline-info'
       # To apply the command to CTRL-T as well
       export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-      export FZF_CTRL_T_OPTS="--preview '{{ "bat --color=always --line-range :500 {}" if enable_bat else "less {}" }}'"
+      export FZF_CTRL_T_OPTS="--preview '{{ "bat --color=always --line-range :500 {}" if enable_bat | default(true) else "less {}" }}'"
 
-Customize fzf key bunding and options.
-
-    enable_zsh_powerline10k: true
-
-Enable `enable_zsh_powerline10k`, Powerlevel10k is a theme for Zsh. It emphasizes speed, flexibility and out-of-the-box experience., install latest version from [Powerlevel10k](https://github.com/romkatv/powerlevel10k).
-
-    prompt_renderer: "oh-my-zsh"
-
-Choose prompt rendener available `oh-my-zsh`(https://ohmyz.sh/) or `oh-my-posh`(https://ohmyposh.dev/).
-
-    upgrade_os: false
-
-Upgrade OS before installation.
+Example of fzf block key bunding and configurations.
 
 ## Dependencies
   For MacOS the following packages are required:
@@ -82,16 +64,15 @@ Upgrade OS before installation.
 
 ## Example Playbook
 
-Example run for user `user`:
 ```sh
 ansible-playbook -i inventory -u user -K test.yml
 ```
+Example run for user `user`
 
+```yml
     ---
     - hosts: all
       connection: local
-      become_user: root
-      become: true
       vars:
         prompt_renderer: "oh-my-zsh"
         zsh_plugins:
@@ -103,13 +84,14 @@ ansible-playbook -i inventory -u user -K test.yml
         - name: "Include pincher95.pimpmyshell"
           ansible.builtin.include_role:
             name: "pincher95.pimpmyshell"
+```
 
 See the `tests/test.yml` directory for an example of running this role over
 Ansible's `local` connection.
 
 ## License
 
-[MIT][link-license](https://spdx.org/licenses/MIT.html)
+[MIT](https://spdx.org/licenses/MIT.html)
 
 ## Author Information
 

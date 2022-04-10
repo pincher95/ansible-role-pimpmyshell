@@ -1,5 +1,5 @@
 ---
-__common_packages: ["zsh", "git", "tmux", "unzip", "curl", "python"]
+common_packages: ["zsh", "git", "tmux", "unzip", "curl", "python3-pip"]
 
 graphical_apps:
   - iterm2
@@ -12,6 +12,6 @@ __zsh_plugins:
 
 __upgrade_os: false
 
-__zsh_shell_path: /usr/local/bin/zsh
+zsh_shell_path: /usr/local/bin/zsh
 
-__zsh_custom_path: "{{ ansible_env['HOME'] }}/.oh-my-zsh/custom"
+zsh_custom_path: "{{ ansible_env['HOME'] }}/.oh-my-zsh/custom"

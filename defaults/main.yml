@@ -1,28 +1,16 @@
 ---
 prompt_renderer: "oh-my-zsh"
 
-common_packages: ["zsh", "git", "tmux", "unzip", "curl", "python3-pip"]
-
-enable_bat: true
-enable_exa: true
-enable_fzf: true
-enable_fd: true
-
-enable_zsh_shell: true
-enable_zsh_powerline10k: true
-enable_zsh_plugins: true
 zsh_plugins:
   - zsh-autosuggestions
   - zsh-syntax-highlighting
   - zsh-completions
   - zsh-history-substring-search
 
-zsh_custom_path: "{{ ansible_env['HOME'] }}/.oh-my-zsh/custom"
-
 fzf_env_config: |
   # Setting for fzf
-  export FZF_DEFAULT_COMMAND='{{ "fd --type f --hidden --follow" if enable_fd else "find . -type f" }}'
+  export FZF_DEFAULT_COMMAND='{{ "fd --type f --hidden --follow" if enable_fd | default(true) else "find . -type f" }}'
   export FZF_DEFAULT_OPTS='--height 100% --multi --layout=reverse-list --inline-info'
   # To apply the command to CTRL-T as well
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-  export FZF_CTRL_T_OPTS="--preview '{{ "bat --color=always --line-range :500 {}" if enable_bat else "less {}" }}'"
+  export FZF_CTRL_T_OPTS="--preview '{{ "bat --color=always --line-range :500 {}" if enable_bat | default(true) else "less {}" }}'"

@@ -13,26 +13,11 @@
   ansible.builtin.set_fact:
     upgrade_os: "{{ __upgrade_os }}"
   when: upgrade_os is undefined
-  
-- name: Set the common packages.
-  ansible.builtin.set_fact:
-    common_packages: "{{ __common_packages }}"
-  when: common_packages | length == 0
 
 - name: Set the zsh plugins.
   ansible.builtin.set_fact:
     zsh_plugins: "{{ __zsh_plugins }}"
   when: zsh_plugins | length == 0
-
-- name: Set the zsh path.
-  ansible.builtin.set_fact:
-    zsh_shell_path: "{{ __zsh_shell_path }}"
-  when: zsh_shell_path is undefined
-
-- name: Set the zsh custom path.
-  ansible.builtin.set_fact:
-    zsh_custom_path: "{{ __zsh_custom_path }}"
-  when: zsh_custom_path is undefined
 
 # Install pimp my shell
 - name: Configure system
@@ -45,4 +30,4 @@
     loop_var: platform
 
 - name: Install extra CLI applications
-  include_tasks: configure-extra-cil.yml
+  include_tasks: extra-cil.yml

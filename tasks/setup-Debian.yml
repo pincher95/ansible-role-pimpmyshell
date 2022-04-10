@@ -62,7 +62,7 @@
         dest: "{{ zsh_custom_path }}/plugins/{{ item }}"
         clone: true
         version: master
-      when: enable_zsh_plugins
+      when: enable_zsh_plugins | default(true)
       loop: "{{ zsh_plugins }}"
 
     - name: Enable Oh-My-Zsh Plugins
@@ -87,7 +87,7 @@
         regexp: "^ZSH_THEME=.*"
         line: "ZSH_THEME=\"powerlevel10k/powerlevel10k\""
         state: present
-      when: enable_zsh_powerline10k
+      when: enable_zsh_powerline10k | default(true)
   when: prompt_renderer == "oh-my-zsh"
 
 - name: Install Oh-My-Posh
