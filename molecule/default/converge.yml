@@ -4,14 +4,13 @@
   # gather_facts: false
   # become: true
 
-  # pre_tasks:
-  #   - name: Update apt cache.
-  #     ansible.builtin.apt:
-  #       update_cache: true
-  #       cache_valid_time: 600
-  #     when: ansible_os_family == 'Debian'
-  #     changed_when: false
-  #     ignore_errors: true
+  pre_tasks:
+    - name: Update apt cache.
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 600
+      when: ansible_os_family == 'Debian'
+      changed_when: false
 
   #   # Ubuntu-specific tasks.
   #   - name: Ensure dirmngr is installed (gnupg dependency).
@@ -25,12 +24,10 @@
       ansible.builtin.include_role:
         name: "pincher95.pimpmyshell"
 
-  # roles:
-  #   - role: geerlingguy.repo-remi
-  #     when:
-  #       - ansible_os_family == 'RedHat'
-  #       - ansible_distribution != 'Fedora'
-  #   - role: pimpmyshell
+  roles:
+    - role: geerlingguy.mac.homebrew
+      when:
+        - ansible_os_family == 'Darwin'
 
   # post_tasks:
   #   - name: Confirm PHP configuration is correct.

@@ -11,23 +11,3 @@
     name: "{{ common_packages }}"
     state: present
   become: true
-
-- name: Change default shell to zsh
-  block:
-    - name: Check that user exists
-      ansible.builtin.command:
-        cmd: "grep -q {{ ansible_env['USER'] }} /etc/passwd"
-      changed_when: false
-      ignore_errors: true
-      register: userexist
-      become: true
-
-    - name: Change user shell
-      ansible.builtin.user:
-        name: "{{ ansible_env['USER'] }}"
-        shell: "{{ zsh_shell_path }}"
-      when: userexist.rc == 0
-      become: true
-  when: enable_zsh_shell | default(true)
-  tags:
-    - molecule-notest
