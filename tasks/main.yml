@@ -29,5 +29,27 @@
   loop_control:
     loop_var: platform
 
+- name: Configure prompt renderer
+  ansible.builtin.include_tasks: 'prompt-{{ prompt_renderer }}.yml'
+
 - name: Install extra CLI applications
   include_tasks: extra-cil.yml
+
+- name: Change default shell to zsh
+  block:
+    - name: Check that user exists
+      ansible.builtin.command:
+        cmd: "grep -q {{ ansible_env['USER'] }} /etc/passwd"
+      changed_when: false
+      ignore_errors: true
+      register: userexist
+
+    - name: Change user shell
+      ansible.builtin.user:
+        name: "{{ ansible_env['USER'] }}"
+        shell: "{{ zsh_shell_path }}"
+      when: userexist.rc == 0
+  when: enable_zsh_shell | default(true)
+  become: true
+  tags:
+    - molecule-notest

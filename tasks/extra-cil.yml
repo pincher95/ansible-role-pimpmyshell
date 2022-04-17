@@ -34,7 +34,7 @@
   block:
     - name: Set OS variant
       ansible.builtin.set_fact:
-        os_variant: '{{ "linux" if ansible_system == "Linux" else "macos" }}'
+        os_variant: '{{ "linux" if ansible_system == "Linux" else "macos" if ansible_system == "Darwin" }}'
 
     - name: Create exa temp directory
       ansible.builtin.file:
@@ -84,7 +84,7 @@
   block:
     - name: Set OS variant
       ansible.builtin.set_fact:
-        os_variant: '{{ "unknown-linux-gnu" if ansible_system == "Linux" else "apple-darwin" }}'
+        os_variant: '{{ "unknown-linux-gnu" if ansible_system == "Linux" else "apple-darwin" if ansible_system == "Darwin" }}'
 
     - name: Create bat temp directory
       ansible.builtin.file:
@@ -133,7 +133,7 @@
   block:
     - name: Set OS variant
       ansible.builtin.set_fact:
-        os_variant: '{{ "unknown-linux-gnu" if ansible_system == "Linux" else "apple-darwin" }}'
+        os_variant: '{{ "unknown-linux-gnu" if ansible_system == "Linux" else "apple-darwin" if ansible_system == "Darwin" }}'
 
     - name: Create fd temp directory
       ansible.builtin.file:

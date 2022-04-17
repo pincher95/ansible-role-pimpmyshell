@@ -1,0 +1,12 @@
+---
+- block:
+  - name: Add Oh-My-Posh Tap
+    community.general.homebrew_tap:
+      name: jandedobbeleer/oh-my-posh
+      state: present
+
+  - name: Install Oh-My-Posh
+    community.general.homebrew:
+      name: "{{ prompt_renderer }}"
+      state: present
+  when: ansible_os_family == 'Darwin'

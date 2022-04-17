@@ -1,5 +1,5 @@
 ---
-common_packages: ["zsh", "git", "tmux", "unzip", "curl", "python3-pip"]
+common_packages: ["zsh", "git", "tmux", "unzip", "curl", "python3"]
 
 graphical_apps:
   - iterm2
