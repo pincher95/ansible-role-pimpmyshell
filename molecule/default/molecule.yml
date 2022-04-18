@@ -1,6 +1,23 @@
 ---
 dependency:
   name: galaxy
+  options:
+    role-file: molecule/default/requirements.yml
+    requirements-file: molecule/default/requirements.yml
+scenario:
+  name: default
+  test_sequence:
+    - lint
+    - destroy
+    - dependency
+    - syntax
+    - create
+    # - prepare
+    - converge
+    - idempotence
+    # - side_effect
+    - verify
+    - destroy
 driver:
   name: docker
 lint: |

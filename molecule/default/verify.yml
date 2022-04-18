@@ -5,16 +5,47 @@
   hosts: all
   gather_facts: false
   tasks:
-  # - name: Zsh is installed
-  #   ansible.builtin.assert:
-  #     that:
-  #       - common_installed if succ
+    - name: Verify zsh is installed
+      ansible.builtin.command: which zsh
+      register: zsh_check
+
+    - name: Verify zsh is installed
+      ansible.builtin.assert:
+        that:
+          - 'zsh_check.rc == 0'
+        fail_msg: "zsh is not installed"
+        success_msg: "zsh is installed"
+    
+    - name: Verify exa is installed
+      ansible.builtin.command: which exa
+      register: exa_check
+      when: enable_exa | default(true)
+
+    - name: Verify exa is installed
+      ansible.builtin.assert:
+        that:
+          - 'exa_check.rc == 0'
+        fail_msg: "exa is not installed"
+        success_msg: "exa is installed"
+      when: enable_exa | default(true)
+    
+    # - name: Verify zsh is installed
+    #   ansible.builtin.command: which zsh
+    #   register: zsh_check
+
+    # - name: Verify zsh is installed
+    #   ansible.builtin.assert:
+    #     that:
+    #       - 'zsh_check.rc == 0'
+    #     fail_msg: "zsh is not installed"
+    #     success_msg: "zsh is installed"
+      
   # - name: Oh-My-Zsh installed
   #   ansible.builtin.assert:
   #     that:
   #       - omz_installed.rc == 0
   #     success_msg: "Oh-My-Zsh installed"
   #     fail_msg: "Oh-My-Zsh not installed"
-  - name: Oh-My-Zsh installed
-    ansible.builtin.assert:
-      that: true 
+    # - name: Oh-My-Zsh installed
+    #   ansible.builtin.assert:
+    #     that: true 

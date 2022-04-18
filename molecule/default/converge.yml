@@ -24,10 +24,10 @@
       ansible.builtin.include_role:
         name: "pincher95.pimpmyshell"
 
-  roles:
-    - role: geerlingguy.mac.homebrew
-      when:
-        - ansible_os_family == 'Darwin'
+  # roles:
+  #   - role: geerlingguy.mac.homebrew
+  #     when:
+  #       - ansible_os_family == 'Darwin'
 
   # post_tasks:
   #   - name: Confirm PHP configuration is correct.
