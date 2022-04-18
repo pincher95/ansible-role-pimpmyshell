@@ -30,7 +30,7 @@ The role tested the following operating systems:
 | `enable_bat`              | true      | Enable `bat`, a `cat` clone with syntax highlighting and Git integration, installing latest version from [bat](https://github.com/sharkdp/bat).                                                                                 |
 | `enable_exa`              | true      | Enable `exa`, a modern replacement for `ls`, installing latest version from [exa](https://github.com/ogham/exa).                                                                                                                |
 | `enable_fd`               | true      | Enable `fd` While it does not aim to support all of find's powerful functionality, it provides sensible (opinionated) defaults for a majority of use cases, installing latest version from [fd](https://github.com/sharkdp/fd). |
-| `enable_fzf`              | true      | Enable `fzf`, fzf is a general-purpose command-line fuzzy finder, installing latest version from [fzf](https://github.com/junegunn/fzf)                                                                                        |
+| `enable_fzf`              | true      | Enable `fzf`, fzf is a general-purpose command-line fuzzy finder, installing latest version from [fzf](https://github.com/junegunn/fzf).                                                                                        |
 | `enable_zsh_powerline10k` | true      | Enable `enable_zsh_powerline10k`, Powerlevel10k is a theme for Zsh. It emphasizes speed, flexibility and out-of-the-box experience., installing latest version from [Powerlevel10k](https://github.com/romkatv/powerlevel10k).  |
 | `prompt_renderer`         | oh-my-zsh | Choose prompt rendener available `oh-my-zsh`(https://ohmyz.sh/) or `oh-my-posh`(https://ohmyposh.dev/).                                                                                                                         |
 | `upgrade_os`              | fasle     | Upgrade OS before installation.                                                                                                                                                                                                 |
@@ -58,7 +58,7 @@ Example zsh plugins.
 Example of fzf block key bunding and configurations.
 
 ## Dependencies
-  For MacOS the following packages are required:
+  For MacOS the following role and collection recommended:
   - [elliotweiser.osx-command-line-tools](https://github.com/elliotweiser/ansible-osx-command-line-tools)
   - [geerlingguy.homebrew](https://github.com/geerlingguy/ansible-collection-mac/tree/master/roles/homebrew)
 
