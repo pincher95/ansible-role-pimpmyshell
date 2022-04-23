@@ -12,24 +12,15 @@
       when: ansible_os_family == 'Debian'
       changed_when: false
 
-  #   # Ubuntu-specific tasks.
-  #   - name: Ensure dirmngr is installed (gnupg dependency).
-  #     ansible.builtin.apt:
-  #       name: dirmngr
-  #       state: present
-  #     when: ansible_os_family == 'Debian'
-  #     ignore_errors: true
+    # Ubuntu-specific tasks.
+    - name: Ensure dirmngr is installed (gnupg dependency).
+      ansible.builtin.apt:
+        name: dirmngr
+        state: present
+      when: ansible_os_family == 'Debian'
+      ignore_errors: true
+
   tasks:
     - name: "Include pincher95.pimpmyshell"
       ansible.builtin.include_role:
         name: "pincher95.pimpmyshell"
-
-  # roles:
-  #   - role: geerlingguy.mac.homebrew
-  #     when:
-  #       - ansible_os_family == 'Darwin'
-
-  # post_tasks:
-  #   - name: Confirm PHP configuration is correct.
-  #     ansible.builtin.shell: php -i | grep 'memory_limit.*192'
-  #     changed_when: false

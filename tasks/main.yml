@@ -1,4 +1,7 @@
 ---
+- name: Get facts
+  ansible.builtin.setup:
+    
 # Variable configuration.
 - name: Include OS-specific variables
   ansible.builtin.include_vars: '{{ platform_vars }}'
@@ -13,6 +16,21 @@
   ansible.builtin.set_fact:
     upgrade_os: "{{ __upgrade_os }}"
   when: upgrade_os is undefined
+
+- name: Set package source "{{ ansible_distribution }}"
+  ansible.builtin.set_fact:
+    source: "{{ __source }}"
+  when: source is undefined
+
+- name: Set aliases
+  ansible.builtin.set_fact:
+    aliases: "{{ __aliases }}"
+  when: aliases is undefined
+
+- name: Set aliases
+  ansible.builtin.set_fact:
+    apps_links: "{{ __apps_links | default([]) }}"
+  when: apps_links is undefined
 
 - name: Set the zsh plugins.
   ansible.builtin.set_fact:
@@ -29,27 +47,40 @@
   loop_control:
     loop_var: platform
 
+- name: Create .zshrc file
+  ansible.builtin.template:
+    src: .zshrc.j2
+    dest: "{{ ansible_env['HOME'] }}/.zshrc"
+    mode: 0644
+    owner: "{{ ansible_env['USER'] }}"
+    group: "{{ ansible_env['USER'] }}"
+    force: false
+
+- name: Install extra CLI applications (git)
+  include_tasks: extra-cli-git.yml
+  when:
+    - source == "git"
+
 - name: Configure prompt renderer
   ansible.builtin.include_tasks: 'prompt-{{ prompt_renderer }}.yml'
 
-- name: Install extra CLI applications
-  include_tasks: extra-cil.yml
+- name: Configure fzf
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env['HOME'] }}/.zshrc"
+    content: "{{ fzf_env_config }}"
+    state: present
+  when: enable_fzf | default(true)
 
-- name: Change default shell to zsh
-  block:
-    - name: Check that user exists
-      ansible.builtin.command:
-        cmd: "grep -q {{ ansible_env['USER'] }} /etc/passwd"
-      changed_when: false
-      ignore_errors: true
-      register: userexist
+- name: Create aliases
+  ansible.builtin.lineinfile:
+    dest: "{{ ansible_env['HOME'] }}/.zshrc"
+    line: "alias {{ item.alias }}='{{ item.command }}'"  # exa/bat alias for zsh shell
+    state: present
+  when: item.state
+  loop: "{{ aliases }}"
 
-    - name: Change user shell
-      ansible.builtin.user:
-        name: "{{ ansible_env['USER'] }}"
-        shell: "{{ zsh_shell_path }}"
-      when: userexist.rc == 0
-  when: enable_zsh_shell | default(true)
+- name: Change user shell
+  ansible.builtin.user:
+    name: "{{ ansible_env['USER'] }}"
+    shell: "{{ zsh_shell_path }}"
   become: true
-  tags:
-    - molecule-notest

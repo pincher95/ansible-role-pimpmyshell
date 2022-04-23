@@ -1,15 +1,15 @@
 ---
 dependency:
   name: galaxy
-  options:
-    role-file: molecule/default/requirements.yml
-    requirements-file: molecule/default/requirements.yml
+  # options:
+  #   role-file: molecule/default/requirements.yml
+  #   requirements-file: molecule/default/requirements.yml
 scenario:
   name: default
   test_sequence:
     - lint
     - destroy
-    - dependency
+    # - dependency
     - syntax
     - create
     # - prepare
@@ -30,7 +30,7 @@ platforms:
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     # volumes:
     #   - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    # privileged: true
+    privileged: true
     pre_build_image: true
 provisioner:
   name: ansible

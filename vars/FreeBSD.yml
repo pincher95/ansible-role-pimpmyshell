@@ -1,5 +1,13 @@
 ---
-common_packages: ["zsh", "git", "tmux", "unzip", "curl", "python3", "tar"]
+common_packages: ["zsh", "git", "tmux", "unzip", "curl", "python3", '{{ "fd-find" if enable_fd | default(true) }}', "tar"]
+
+cli_packages:
+  - package: "textproc/bat"
+    state: "{{ enable_bat | default(true) }}"
+  - package: "sysutils/exa"
+    state: "{{ enable_exa | default(true) }}"
+  - package: "textproc/fzf"
+    state: "{{ enable_fzf | default(true) }}"
 
 __aliases:
   - alias: ll
@@ -11,16 +19,10 @@ __aliases:
 
 __upgrade_os: false
 
-graphical_apps:
-  - iterm2
-
 __zsh_plugins:
   - zsh-autosuggestions
   - zsh-syntax-highlighting
   - zsh-completions
-  - zsh-history-substring-search
-
-__source: package
 
 zsh_shell_path: /usr/local/bin/zsh
 

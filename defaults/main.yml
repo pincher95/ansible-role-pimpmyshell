@@ -1,6 +1,8 @@
 ---
 prompt_renderer: "oh-my-zsh"
 
+source: package
+
 zsh_plugins:
   - zsh-autosuggestions
   - zsh-syntax-highlighting

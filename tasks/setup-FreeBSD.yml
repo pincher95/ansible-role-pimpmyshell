@@ -8,7 +8,8 @@
     group: wheel
   loop:
     - { src: etc/login.conf, dest: /etc/login.conf }
-    - { src: usr/share/local/, dest: /usr/share/local/ }
+    - { src: usr/share/locale/, dest: /usr/share/locale/ }
+  become: true
   tags:
     - pfsense
 
@@ -18,5 +19,45 @@
   changed_when: false
   # register: result
   # until: result.rc == 0
+  become: true
   tags:
     - pfsense
+
+- name: Upgrade all installed packages
+  community.general.pkgng:
+    name: "*"
+    state: "{{ 'latest' if upgrade_os | default(false) else 'present' }}"
+  when: upgrade_os | default(false)
+
+- name: Install Pre-requirements CLI applications
+  community.general.pkgng:
+    name: "{{ common_packages }}"
+    state: present
+  become: true
+  become_method: su
+
+- name: Initialize ports db
+  ansible.builtin.command:
+    cmd: portsnap fetch extract
+  changed_when: false
+  # args:
+  #   creates: /usr/ports
+  become: true
+  become_method: su
+
+- name: Update ports db
+  ansible.builtin.command:
+    cmd: portsnap fetch update
+  changed_when: false
+  become: true
+  become_method: su
+
+- name: Install extra CLI applications
+  community.general.portinstall:
+    name: "{{ item.package }}"
+    state: present
+    use_packages: true
+  when: item.state
+  loop: "{{ cli_packages }}"
+  become: true
+  become_method: su

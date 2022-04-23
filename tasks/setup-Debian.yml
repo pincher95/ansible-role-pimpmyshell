@@ -1,4 +1,12 @@
 ---
+- name: Add exa repository
+  ansible.builtin.apt_repository:
+    repo: "{{ exa_repo }}"
+    state: present
+    filename: "spvkgn-ubuntu-exa.list"
+  when: source == "package"
+  become: true
+  
 - name: Update apt cache.
   ansible.builtin.apt:
     update_cache: true
@@ -10,4 +18,22 @@
   ansible.builtin.apt:
     name: "{{ common_packages }}"
     state: present
+  become: true
+
+- name: Install extra CLI applications (package)
+  ansible.builtin.apt:
+    name: "{{ extra_packages }}"
+    state: present
+  when: source == "package"
+  become: true
+
+- name: Add links to apps installed via package
+  ansible.builtin.file:
+    dest: "{{ item.dest }}"
+    src: "{{ item.src }}"
+    state: link
+  loop: "{{ apps_links }}"
+  when:
+    - source == "package"
+    - item.state
   become: true
