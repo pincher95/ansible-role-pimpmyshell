@@ -17,17 +17,12 @@
     upgrade_os: "{{ __upgrade_os }}"
   when: upgrade_os is undefined
 
-# - name: Set package source (OS {{ ansible_distribution }})
-#   ansible.builtin.set_fact:
-#     apps_source: "{{ __apps_source }}"
-#   when: apps_source is undefined
-
 - name: Set aliases
   ansible.builtin.set_fact:
     aliases: "{{ __aliases }}"
   when: aliases is undefined
 
-- name: Set aliases
+- name: Set apps links
   ansible.builtin.set_fact:
     apps_links: "{{ __apps_links | default([]) }}"
   when: apps_links is undefined
@@ -52,9 +47,12 @@
     src: .zshrc.j2
     dest: "{{ ansible_env['HOME'] }}/.zshrc"
     mode: 0644
-    owner: "{{ ansible_env['USER'] }}"
-    group: "{{ ansible_env['USER'] }}"
+    owner: "{{ ansible_env['USER'] | default(omit) }}"
+    group: "{{ ansible_env['USER'] | default(omit) }}"
     force: false
+  changed_when:
+    - "'molecule-idempotence-notest' not in ansible_skip_tags"
+    # - "'molecule-notest' not in ansible_skip_tags"
 
 - name: Install extra CLI applications (git)
   include_tasks: extra-cli-git.yml
@@ -83,4 +81,7 @@
   ansible.builtin.user:
     name: "{{ ansible_env['USER'] }}"
     shell: "{{ zsh_shell_path }}"
+  changed_when:
+    - "'molecule-idempotence-notest' not in ansible_skip_tags"
+  tags: molecule-notest
   become: true

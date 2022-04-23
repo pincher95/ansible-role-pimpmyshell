@@ -5,47 +5,85 @@
   hosts: all
   gather_facts: false
   tasks:
-    - name: Verify zsh is installed
-      ansible.builtin.command: which zsh
-      register: zsh_check
+    - name: Verify zsh
+      block:
+        - name: Stat zsh
+          ansible.builtin.command: which zsh
+          register: zsh_check
 
-    - name: Verify zsh is installed
-      ansible.builtin.assert:
-        that:
-          - 'zsh_check.rc == 0'
-        fail_msg: "zsh is not installed"
-        success_msg: "zsh is installed"
-    
-    - name: Verify exa is installed
-      ansible.builtin.command: which exa
-      register: exa_check
+        - name: Verify zsh is installed
+          ansible.builtin.assert:
+            that:
+              - 'zsh_check.rc == 0'
+            fail_msg: "zsh is not installed"
+            success_msg: "zsh is installed"
+
+    - name: Verify exa
+      block:
+        - name: Stat exa
+          ansible.builtin.command: which exa
+          register: exa_check
+
+        - name: Verify exa is installed
+          ansible.builtin.assert:
+            that:
+              - 'exa_check.rc == 0'
+            fail_msg: "exa is not installed"
+            success_msg: "exa is installed"
       when: enable_exa | default(true)
 
-    - name: Verify exa is installed
-      ansible.builtin.assert:
-        that:
-          - 'exa_check.rc == 0'
-        fail_msg: "exa is not installed"
-        success_msg: "exa is installed"
-      when: enable_exa | default(true)
-    
-    # - name: Verify zsh is installed
-    #   ansible.builtin.command: which zsh
-    #   register: zsh_check
+    - name: Verify bat
+      block:
+        - name: Stat bat
+          ansible.builtin.command: which bat
+          register: bat_check
 
-    # - name: Verify zsh is installed
-    #   ansible.builtin.assert:
-    #     that:
-    #       - 'zsh_check.rc == 0'
-    #     fail_msg: "zsh is not installed"
-    #     success_msg: "zsh is installed"
-      
-  # - name: Oh-My-Zsh installed
-  #   ansible.builtin.assert:
-  #     that:
-  #       - omz_installed.rc == 0
-  #     success_msg: "Oh-My-Zsh installed"
-  #     fail_msg: "Oh-My-Zsh not installed"
-    # - name: Oh-My-Zsh installed
-    #   ansible.builtin.assert:
-    #     that: true 
+        - name: Verify bat is installed
+          ansible.builtin.assert:
+            that:
+              - 'bat_check.rc == 0'
+            fail_msg: "bat is not installed"
+            success_msg: "bat is installed"
+      when: enable_bat | default(true)
+
+    - name: Verify fd
+      block:
+        - name: Stat fd
+          ansible.builtin.command: which fd
+          register: fd_check
+
+        - name: Verify fd is installed
+          ansible.builtin.assert:
+            that:
+              - 'fd_check.rc == 0'
+            fail_msg: "fd is not installed"
+            success_msg: "fd is installed"
+      when: enable_fd | default(true)
+
+    # - name: Verify fzf
+    #   block:
+    #     - name: Stat fzf
+    #       ansible.builtin.command: which fzf
+    #       register: fzf_check
+
+    #     - name: Verify fzf is installed
+    #       ansible.builtin.assert:
+    #         that:
+    #           - 'fzf_check.rc == 0'
+    #         fail_msg: "fzf is not installed"
+    #         success_msg: "fzf is installed"
+    #   when: enable_fzf | default(true)
+
+    - name: Verify fd
+      block:
+        - name: Verify fd is installed
+          ansible.builtin.command: which fd
+          register: fd_check
+
+        - name: Verify fd is installed
+          ansible.builtin.assert:
+            that:
+              - 'fd_check.rc == 0'
+            fail_msg: "fd is not installed"
+            success_msg: "fd is installed"
+      when: enable_fd | default(true)

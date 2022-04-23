@@ -2,7 +2,6 @@
 - name: Set package source (OS {{ ansible_distribution }})
   ansible.builtin.set_fact:
     apps_source: "{{ __apps_source }}"
-  when: apps_source is undefined
 
 - block:
     - name: Upgrade OS (Redhat 8.x)

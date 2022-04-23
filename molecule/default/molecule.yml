@@ -26,7 +26,7 @@ lint: |
   ansible-lint .
 platforms:
   - name: instance-${MOLECULE_DISTRO}
-    image: "pincher95/docker-${MOLECULE_DISTRO:-ubuntu2004}-ansible:latest"
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu2204}-ansible:latest"
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     # volumes:
     #   - /sys/fs/cgroup:/sys/fs/cgroup:ro
