@@ -20,7 +20,7 @@ __zsh_plugins:
   - zsh-completions
   - zsh-history-substring-search
 
-__source: package
+__apps_source: package
 
 zsh_shell_path: /usr/local/bin/zsh
 

@@ -7,7 +7,12 @@
 
 # - name: install brew
 #   ansible.builtin.include_role:
-#     - geerlingguy.mac.homebrew
+#     - geerlingguy.mac.homebrew_cask
+
+- name: Set package source (OS {{ ansible_distribution }})
+  ansible.builtin.set_fact:
+    apps_source: "{{ __apps_source }}"
+  when: apps_source is undefined
 
 - name: Install CLI applications
   community.general.homebrew:

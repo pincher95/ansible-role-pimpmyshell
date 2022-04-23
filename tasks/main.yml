@@ -17,10 +17,10 @@
     upgrade_os: "{{ __upgrade_os }}"
   when: upgrade_os is undefined
 
-- name: Set package source "{{ ansible_distribution }}"
-  ansible.builtin.set_fact:
-    source: "{{ __source }}"
-  when: source is undefined
+# - name: Set package source (OS {{ ansible_distribution }})
+#   ansible.builtin.set_fact:
+#     apps_source: "{{ __apps_source }}"
+#   when: apps_source is undefined
 
 - name: Set aliases
   ansible.builtin.set_fact:
@@ -59,7 +59,7 @@
 - name: Install extra CLI applications (git)
   include_tasks: extra-cli-git.yml
   when:
-    - source == "git"
+    - apps_source == "git"
 
 - name: Configure prompt renderer
   ansible.builtin.include_tasks: 'prompt-{{ prompt_renderer }}.yml'

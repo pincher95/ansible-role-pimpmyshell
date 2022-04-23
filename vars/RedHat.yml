@@ -18,7 +18,7 @@ __zsh_plugins:
   - zsh-syntax-highlighting
   - zsh-completions
 
-__source: git
+__apps_source: git
 
 zsh_shell_path: /bin/zsh
 

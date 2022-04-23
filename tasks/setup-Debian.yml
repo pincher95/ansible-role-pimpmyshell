@@ -1,10 +1,15 @@
 ---
+- name: Set package source (OS {{ ansible_distribution }})
+  ansible.builtin.set_fact:
+    apps_source: "{{ __apps_source }}"
+  when: apps_source is undefined
+
 - name: Add exa repository
   ansible.builtin.apt_repository:
     repo: "{{ exa_repo }}"
     state: present
     filename: "spvkgn-ubuntu-exa.list"
-  when: source == "package"
+  when: apps_source == "package"
   become: true
   
 - name: Update apt cache.
@@ -24,7 +29,7 @@
   ansible.builtin.apt:
     name: "{{ extra_packages }}"
     state: present
-  when: source == "package"
+  when: apps_source == "package"
   become: true
 
 - name: Add links to apps installed via package
@@ -34,6 +39,6 @@
     state: link
   loop: "{{ apps_links }}"
   when:
-    - source == "package"
+    - apps_source == "package"
     - item.state
   become: true

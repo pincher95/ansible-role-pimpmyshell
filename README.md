@@ -34,7 +34,7 @@ The role tested the following operating systems:
 | `enable_zsh_powerline10k` | true      | Enable `enable_zsh_powerline10k`, Powerlevel10k is a theme for Zsh. It emphasizes speed, flexibility and out-of-the-box experience., installing latest version from [Powerlevel10k](https://github.com/romkatv/powerlevel10k).  |
 | `prompt_renderer`         | oh-my-zsh | Choose prompt rendener available `oh-my-zsh`(https://ohmyz.sh/) or `oh-my-posh`(https://ohmyposh.dev/).                                                                                                                         |
 | `upgrade_os`              | fasle     | Upgrade OS before installation.                                                                                                                                                                                                 |
-| `source    `              | package   | For Debian, Darwin and FreeBSD extra cli application can be installed from package manager. RedHat will always use git as source                                                                                                |
+| `apps_source`             | package   | For Debian, Darwin and FreeBSD extra cli application can be installed from package manager. RedHat will always use git as source                                                                                                |
 | `fzf_env_config`          | string    | Block of fzf key binding and configurations.                                                                                                                                                                                    |
 
 

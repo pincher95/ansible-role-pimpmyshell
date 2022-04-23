@@ -1,7 +1,7 @@
 ---
 common_packages: ["zsh", "git", "tmux", "unzip", "curl", "python3-pip", "tar"] 
 
-exa_repo: "deb https://ppa.launchpadcontent.net/spvkgn/exa/ubuntu focal main"
+exa_repo: "deb [trusted=yes] https://ppa.launchpadcontent.net/spvkgn/exa/ubuntu focal main"
 
 extra_packages:
   - '{{ "exa" if enable_exa | default(true) }}'
@@ -32,7 +32,7 @@ __zsh_plugins:
   - zsh-syntax-highlighting
   - zsh-completions
 
-__source: package
+__apps_source: package
 
 zsh_shell_path: /bin/zsh
 
