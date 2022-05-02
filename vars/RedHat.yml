@@ -1,7 +1,7 @@
 ---
 common_packages: ["zsh", "git", "tmux", "unzip", "curl", "python3-pip", "tar"]
 
-common_packages_7: ["python3", "python3-setuptools", "python3-virtualenv", "chkconfig"]
+# common_packages_7: ["python3", "python2-pip", "chkconfig"]
 
 __aliases:
   - alias: ll

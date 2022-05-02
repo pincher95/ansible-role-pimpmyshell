@@ -21,6 +21,14 @@
   become: true
 
 - block:
+    - name: Update python alternative
+      community.general.alternatives:
+        link: /usr/bin/python
+        name: python
+        path: /usr/bin/python3
+      changed_when:
+        - "'molecule-idempotence-notest' not in ansible_skip_tags"
+
     - name: Upgrade OS (Redhat 7.x)
       ansible.builtin.yum:
         update_cache: true
@@ -38,13 +46,5 @@
       changed_when:
         - "'molecule-idempotence-notest' not in ansible_skip_tags"
       register: common_installed
-
-    - name: Update python alternative
-      community.general.alternatives:
-        link: /usr/bin/python
-        name: python
-        path: /usr/bin/python3
-      changed_when:
-        - "'molecule-idempotence-notest' not in ansible_skip_tags"
   when: ansible_distribution_major_version | int == 7
   become: true

@@ -1,6 +1,6 @@
 ---
-- name: Get facts
-  ansible.builtin.setup:
+# - name: Get facts
+#   ansible.builtin.setup:
     
 # Variable configuration.
 - name: Include OS-specific variables

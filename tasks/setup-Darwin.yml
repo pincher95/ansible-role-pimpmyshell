@@ -1,14 +1,4 @@
 ---
-# - name: Get collection
-#   ansible.builtin.command: ansible-galaxy collection install -r ./files/darwin-requirements.yml
-#   changed_when: false
-#   # register: result
-#   # until: result.rc == 0
-
-# - name: install brew
-#   ansible.builtin.include_role:
-#     - geerlingguy.mac.homebrew_cask
-
 - name: Set package source (OS {{ ansible_distribution }})
   ansible.builtin.set_fact:
     apps_source: "{{ __apps_source }}"

@@ -3,13 +3,14 @@
   ansible.builtin.pip: 
     name: pip
     state: present
-    version: 21.3.1
-  become: true
+    extra_args: --upgrade
+    executable: /usr/bin/pip3
 
 - name: Install Github python library
   ansible.builtin.pip:
     name: github3.py
     state: present
+    version: latest
     executable: /usr/bin/pip3
 
 - name: Install fzf
